@@ -7,7 +7,8 @@ export default defineNuxtConfig({
   css: ['~/assets/css/main.scss'],
   runtimeConfig: {
     public: {
-      typoTextSrc: 'https://unpkg.com/web-typo-text/src/typo-text.js'
+      // typoTextSrc: 'https://unpkg.com/web-typo-text',
+      typoTextSrc: '/script/typo-text.js'
     }
   }
 })

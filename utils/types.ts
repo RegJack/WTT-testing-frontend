@@ -1,4 +1,4 @@
-export type TestName = 'images-0|2' | 'images-1|3'
+export type TestName = 'zero-or-two-images' | 'one-or-three-images'
 
 export interface RespondentInfo {
   gender: string
@@ -12,8 +12,8 @@ export interface Answer {
 
 export interface TestResult {
   completed: boolean
-  time: string
-  answers: Answer[]
+  time?: string
+  answers?: Answer[]
 }
 
 export interface CookieTest {

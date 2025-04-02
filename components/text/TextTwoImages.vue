@@ -1,8 +1,9 @@
 <script lang="ts" setup>
+const config = useRuntimeConfig()
 useHead({
   script: [
     {
-      src: 'https://www.unpkg.com/web-typo-text@0.1.4/src/typo-text.js',
+      src: config.public.typoTextSrc,
       tagPosition: 'bodyClose'
     }
   ]
@@ -10,15 +11,8 @@ useHead({
 </script>
 
 <template>
-  <typo-text
-    font-size="16px"
-    text-align="justify"
-    column-count="4"
-    column-width="400px"
-    column-gap="30px"
-    chars-per-line="60"
-  >
-    <h1 heading-size="lg" heading-align="left" heading-span="all">Заголовок пирипи пубиби</h1>
+  <typo-text font-size="15px" text-align="justify" column-count="1" column-width="520px">
+    <h1 heading-size="lg" heading-align="center">Заголовок пирипи пубиби</h1>
     <p>
       Высокий уровень вовлечения представителей целевой аудитории является четким доказательством
       простого факта: высококачественный прототип будущего проекта предопределяет высокую
@@ -28,15 +22,7 @@ useHead({
       континентально-европейского типа политической культуры, будут ограничены исключительно образом
       мышления.
     </p>
-    <img
-      height="200px"
-      src="/image.png"
-      alt="Картинка"
-      object-fit="cover"
-      object-position="center center"
-      image-caption="Подпись к картинке"
-      image-span=""
-    />
+    <img height="300px" src="/image.png" object-fit="cover" image-caption="Подпись к картинке" />
 
     <p>
       Каждый из нас понимает очевидную вещь: реализация намеченных плановых заданий играет
@@ -80,7 +66,16 @@ useHead({
       себе. Однозначно, явные признаки победы институционализации рассмотрены исключительно в
       разрезе маркетинговых и финансовых предпосылок.
     </p>
-
+    <img
+      height="200px"
+      src="/image.png"
+      alt="Картинка"
+      object-fit="cover"
+      object-position="center center"
+      image-caption="Подпись к картинке"
+      image-float="right"
+      image-float-percent="35"
+    />
     <p>
       Таким образом, курс на социально-ориентированный национальный проект создаёт необходимость
       включения в производственный план целого ряда внеочередных мероприятий с учётом комплекса
@@ -113,14 +108,6 @@ useHead({
       что семантический разбор внешних противодействий предоставляет широкие возможности для модели
       развития.
     </p>
-
-    <img
-      height="300px"
-      src="/image.png"
-      object-fit="contain"
-      image-caption="Подпись к картинке"
-      image-span="all"
-    />
 
     <p>
       Мы вынуждены отталкиваться от того, что существующая теория требует от нас анализа
@@ -204,4 +191,4 @@ useHead({
   </typo-text>
 </template>
 
-<style></style>
+<style scoped lang="scss"></style>

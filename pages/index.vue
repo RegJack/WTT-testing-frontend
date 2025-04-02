@@ -14,7 +14,7 @@ const cookieTest = useCookie<CookieTest>('test', {
   default: () => ({}) as CookieTest
 })
 
-cookieTest.value.test = 'images-0|2'
+cookieTest.value.test = 'zero-or-two-images'
 
 function goToTest(e: Event) {
   cookieTest.value.respondentInfo = {
@@ -22,69 +22,79 @@ function goToTest(e: Event) {
     age: ((e.target as HTMLFormElement).elements.namedItem('age') as HTMLInputElement).value
   }
 
-  cookieTest.value.firstTestResult.completed = false
-  cookieTest.value.secondTestResult.completed = false
+  cookieTest.value.firstTestResult = { completed: false }
+  cookieTest.value.secondTestResult = { completed: false }
+
+  navigateTo({ name: 'text-name', params: { name: cookieTest.value.test } })
 }
 </script>
 
 <template>
   <main class="main">
     <section class="section info">
-      <typo-text font-size="16px" text-align="justify" column-count="1" chars-per-line="60">
-        <h1 class="heading" heading-size="lg" heading-align="center">
-          Тестирование удобочитаемости
-        </h1>
-        <p class="text">
-          Благодарю за готовность принять участие в исследовании! В ходе тестирования вам предстоит
-          прочитать два текста. Пожалуйста, прочитайте их, не отвелекаясь, в комфортном для вас
-          темпе.
-        </p>
-        <p class="text">
-          После прочтения каждого текста вам будет предложено по 10 вопросов, на которые нужно будет
-          ответить. Вопросы касаются только того, что было изложено в тексте. Пожалуйста,
-          учитывайте, что вернуться к отвеченным вопросам невозможно, поэтому будьте внимательны,
-          подтверждая свой ответ. Система фиксирует ответы при нажатии кнопки «Далее».
-        </p>
-        <p class="text">
-          Тестирование следует выполнять с персонального компьютера или ноутбука. Браузер должен
-          быть развернут на полный экран. Убедитесь, что в настройках браузера включены cookie,
-          javascript и показ изображений. Переходя к тестированию, Вы соглашаетесь с тем, что
-          ознакомлены с инструкцией.
-        </p>
-        <p class="text">
-          Перед прохождением опроса, пожалуйста, укажите Ваш пол и возраст. Данные буду использованы
-          при анализе результатов тестирования.
-        </p>
-        <form action="#" class="form" @submit.prevent="goToTest">
-          <div class="form__item">
-            <label for="genderSelect" class="form__label">Пол</label>
-            <select
-              id="genderSelect"
-              ref="genderSelect"
-              class="form__select"
-              name="gender"
-              required
-            >
-              <option value="" selected disabled>Выбрать пол</option>
-              <option value="male">Мужской</option>
-              <option value="female">Женский</option>
-            </select>
-          </div>
-          <div class="form__item">
-            <label for="ageInput" class="form__label">Возраст</label>
-            <input
-              id="ageInput"
-              type="number"
-              name="age"
-              min="0"
-              max="123"
-              class="form__input form__input"
-              required
-            />
-          </div>
-          <button type="submit" class="form__button">Перейти к тестированию</button>
-        </form>
-      </typo-text>
+      <client-only>
+        <typo-text
+          font-size="15px"
+          text-align="justify"
+          column-width="495px"
+          column-count="1"
+          chars-per-line="60"
+        >
+          <h1 class="heading" heading-size="lg" heading-align="center">
+            Тестирование удобочитаемости
+          </h1>
+          <p class="text">
+            Благодарю за готовность принять участие в исследовании! В ходе тестирования вам
+            предстоит прочитать два текста. Пожалуйста, прочитайте их, не отвелекаясь, в комфортном
+            для вас темпе.
+          </p>
+          <p class="text">
+            После прочтения каждого текста вам будет предложено по 10 вопросов, на которые нужно
+            будет ответить. Вопросы касаются только того, что было изложено в тексте. Пожалуйста,
+            учитывайте, что вернуться к отвеченным вопросам невозможно, поэтому будьте внимательны,
+            подтверждая свой ответ. Система фиксирует ответы при нажатии кнопки «Далее».
+          </p>
+          <p class="text">
+            Тестирование следует выполнять с персонального компьютера или ноутбука. Браузер должен
+            быть развернут на полный экран. Убедитесь, что в настройках браузера включены cookie,
+            javascript и показ изображений. Переходя к тестированию, Вы соглашаетесь с тем, что
+            ознакомлены с инструкцией.
+          </p>
+          <p class="text">
+            Перед прохождением опроса, пожалуйста, укажите Ваш пол и возраст. Данные буду
+            использованы при анализе результатов тестирования.
+          </p>
+          <form action="#" class="form" @submit.prevent="goToTest">
+            <div class="form__item">
+              <label for="genderSelect" class="form__label">Пол</label>
+              <select
+                id="genderSelect"
+                ref="genderSelect"
+                class="form__select"
+                name="gender"
+                required
+              >
+                <option value="" selected disabled>Выбрать пол</option>
+                <option value="male">Мужской</option>
+                <option value="female">Женский</option>
+              </select>
+            </div>
+            <div class="form__item">
+              <label for="ageInput" class="form__label">Возраст</label>
+              <input
+                id="ageInput"
+                type="number"
+                name="age"
+                min="0"
+                max="123"
+                class="form__input form__input"
+                required
+              />
+            </div>
+            <button type="submit" class="form__button">Перейти к тестированию</button>
+          </form>
+        </typo-text>
+      </client-only>
     </section>
   </main>
 </template>
@@ -113,8 +123,7 @@ function goToTest(e: Event) {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    min-width: 256px;
-    max-width: calc((100% - 16px) / 2);
+    min-width: calc((100% - 16px) / 2);
     gap: 8px;
   }
 

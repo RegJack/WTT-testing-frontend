@@ -7,6 +7,8 @@ const cookieTest = useCookie<CookieTest>('test')
 
 const currentText = shallowRef()
 
+const timerStart = performance.now()
+
 switch (route.params.name as TestName) {
   case 'zero-or-two-images':
     if (route.query.test) {
@@ -24,12 +26,26 @@ switch (route.params.name as TestName) {
     }
     break
 }
+
+function stopTimer() {
+  const timerEnd = performance.now()
+
+  if (!cookieTest.value.firstTestResult.completed) {
+    cookieTest.value.firstTestResult.time = timerEnd - timerStart
+  } else if (!cookieTest.value.secondTestResult.completed) {
+    cookieTest.value.secondTestResult.time = timerEnd - timerStart
+  }
+}
 </script>
 
 <template>
   <main class="main">
     <component :is="currentText" />
-    <NuxtLink :to="{ name: 'test-name', params: { name: cookieTest.test } }" class="link-button">
+    <NuxtLink
+      :to="{ name: 'test-name', params: { name: cookieTest.test } }"
+      class="link-button"
+      @click.prevent="stopTimer"
+    >
       Перейти к вопросам
     </NuxtLink>
   </main>

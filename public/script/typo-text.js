@@ -488,16 +488,20 @@ class TypoText extends HTMLElement {
   }
 
   _getImageHeight(figure, image) {
+    const oRatio = image.naturalWidth / image.naturalHeight
+
     if (
-      figure.style.float &&
       getComputedStyle(figure).maxWidth &&
-      getComputedStyle(figure).maxWidth.endsWith('%')
+      getComputedStyle(figure).maxWidth.endsWith('%') &&
+      (image.style.objectFit == 'contain' || !figure.style.float)
     ) {
       const figureWidth =
         (getComputedStyle(figure).maxWidth.split('%')[0] * parseFloat(this['column-width'])) / 100
-      const oRatio = image.naturalWidth / image.naturalHeight
-      console.log(figureWidth / oRatio, image.offsetHeight)
-      if (figureWidth / oRatio < image.offsetHeight) {
+      // console.log(figureWidth / oRatio, image.offsetHeight)
+      if (
+        figureWidth / oRatio < image.offsetHeight ||
+        getComputedStyle(figure).maxWidth == '100%'
+      ) {
         return this._rounded(
           Math.floor(figureWidth / oRatio / this.typographySettings.lineHeight) *
             this.typographySettings.lineHeight -
@@ -548,6 +552,8 @@ class TypoText extends HTMLElement {
       figure.style.maxWidth =
         this._checkIsUnitSet(img.getAttribute('image-float-percent'), '%') || '30%'
       figure.style.width = 'max-content'
+    } else {
+      figure.style.maxWidth = '100%'
     }
 
     this._setImageSize(figure, image)

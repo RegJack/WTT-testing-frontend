@@ -12,7 +12,7 @@ export interface Answer {
 
 export interface TestResult {
   completed: boolean
-  time?: string
+  time?: number
   answers?: Answer[]
 }
 
@@ -21,4 +21,16 @@ export interface CookieTest {
   respondentInfo: RespondentInfo
   firstTestResult: TestResult
   secondTestResult: TestResult
+}
+
+export interface Option {
+  id: string
+  text: string
+  correct: boolean
+}
+
+export interface Question {
+  id: string
+  text: string
+  options: Option[]
 }

@@ -9,6 +9,8 @@ useHead({
   ]
 })
 
+const userAgent = navigator.userAgent
+
 const cookieTest = useCookie<CookieTest>('test', {
   maxAge: 60 * 60 * 24 * 365,
   default: () => ({}) as CookieTest
@@ -19,7 +21,10 @@ cookieTest.value.test = 'zero-or-two-images'
 function goToTest(e: Event) {
   cookieTest.value.respondentInfo = {
     gender: ((e.target as HTMLFormElement).elements.namedItem('gender') as HTMLSelectElement).value,
-    age: ((e.target as HTMLFormElement).elements.namedItem('age') as HTMLInputElement).value
+    age: parseInt(
+      ((e.target as HTMLFormElement).elements.namedItem('age') as HTMLInputElement).value
+    ),
+    userAgent: userAgent
   }
 
   cookieTest.value.firstTestResult = { completed: false }

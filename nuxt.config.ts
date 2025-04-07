@@ -8,7 +8,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       // typoTextSrc: 'https://unpkg.com/web-typo-text',
-      typoTextSrc: '/script/typo-text.js'
+      typoTextSrc: '/script/typo-text.js',
+      jsonBinApiKey: process.env.JSON_BIN_API_KEY
     }
   }
 })

@@ -2,7 +2,8 @@ export type TestName = 'zero-or-two-images' | 'one-or-three-images'
 
 export interface RespondentInfo {
   gender: string
-  age: string
+  age: number
+  userAgent: string
 }
 
 export interface Answer {

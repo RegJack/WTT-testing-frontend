@@ -1,18 +1,18 @@
 <script lang="ts" setup>
 const props = defineProps({
   question: {
-    type: Object as PropType<Question>,
+    type: Object as PropType<ApiQuestion>,
     required: true
   }
 })
 
-const answer = defineModel<string>('answer', { required: true, default: '' })
+const answer = defineModel<number>('answer', { required: true, default: 0 })
 </script>
 
 <template>
   <div class="question">
-    <p class="question__text">{{ props.question.text }}</p>
-    <div v-for="option in question.options" :key="option.text" class="question__option">
+    <p class="question__text">{{ props.question.title }}</p>
+    <div v-for="option in question.answers" :key="option.title" class="question__option">
       <input
         :id="'question' + props.question.id + option.id"
         v-model="answer"
@@ -23,7 +23,7 @@ const answer = defineModel<string>('answer', { required: true, default: '' })
         required
       />
       <label :for="'question' + props.question.id + option.id" class="question__label">{{
-        option.text
+        option.title
       }}</label>
     </div>
   </div>

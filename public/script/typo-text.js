@@ -21,6 +21,7 @@ const templateHTML = `
       --column-width: 400px;
       --column-gap: calc(var(--base-font-size) * 2.75);
       --base-font-size: 12px;
+      --base-line-height: calc(var(--base-font-size) * 1.2);
       --max-width-1-column: calc(var(--column-width) * 1 + 2.75em * 0);
       --max-width-2-column: calc(var(--column-width) * 2 + 2.75em * 1);
       --max-width-3-column: calc(var(--column-width) * 3 + 2.75em * 2);
@@ -33,7 +34,7 @@ const templateHTML = `
       column-count: var(--column-count);
       column-width: var(--column-width);
       column-gap: var(--column-gap);
-      line-height: calc(var(--base-font-size) * 1.2);
+      line-height: var(--base-line-height);
       /* background-image:repeating-linear-gradient(to bottom, transparent 0 calc(calc(var(--base-font-size) * 1.2) - 1px), #ccc calc(calc(var(--base-font-size) * 1.2) - 1px) calc(var(--base-font-size) * 1.2)) */
     }
 
@@ -69,6 +70,7 @@ const templateHTML = `
     ::slotted(p) {
       font-size: 1em;
       hyphens: auto;
+      text-wrap: pretty;
     }
   </style>
   <article><slot /></article>
@@ -110,7 +112,14 @@ class TypoText extends HTMLElement {
 
   // component attributes
   static get observedAttributes() {
-    return ['font-size', 'column-width', 'column-count', 'column-gap', 'chars-per-line']
+    return [
+      'font-size',
+      'line-height',
+      'column-width',
+      'column-count',
+      'column-gap',
+      'chars-per-line'
+    ]
   }
 
   // attribute change
@@ -120,6 +129,12 @@ class TypoText extends HTMLElement {
       case 'font-size':
         this[property] = this._checkIsUnitSet(newValue)
         this.style.setProperty('--base-font-size', this[property])
+
+        break
+
+      case 'line-height':
+        this[property] = this._checkIsUnitSet(newValue)
+        this.style.setProperty('--base-line-height', this[property])
 
         break
 
@@ -191,7 +206,7 @@ class TypoText extends HTMLElement {
     const noBreakSpace = '\u00A0'
 
     return text.replace(
-      /(\s)(о|в|во|с|к|но|он|из|на|со|и|для|у|как)(\s)([\("«А-яЁёЙй])/gimu,
+      /(\s)(о|в|во|с|к|но|он|из|на|со|и|для|у|как|а|или|без)(\s)([\("«А-яЁёЙй])/gimu,
       '$1' + '$2' + noBreakSpace + '$4'
     )
   }
@@ -677,7 +692,7 @@ class TypoText extends HTMLElement {
 
         case 'lg':
           heading.style.fontSize = `${this.typographySettings.fontSize * 3}px`
-          heading.style.lineHeight = `${this.typographySettings.lineHeight * 3}px`
+          heading.style.lineHeight = `${this.typographySettings.lineHeight * 2.5}px`
           heading.style.marginTop = `-${this.typographySettings.lineHeight}px`
           break
       }
@@ -801,6 +816,20 @@ class TypoText extends HTMLElement {
       await this._customOnLoad(this._setColumnWidthStyles)
     }, 1)
 
+    if (this.getAttribute('font-size')) {
+      this.style.setProperty(
+        '--base-font-size',
+        this._checkIsUnitSet(this.getAttribute('font-size'))
+      )
+    }
+
+    if (this.getAttribute('line-height')) {
+      this.style.setProperty(
+        '--base-line-height',
+        this._checkIsUnitSet(this.getAttribute('line-height'))
+      )
+    }
+
     for (const paragraph of Array.from(this.getElementsByTagName('p'))) {
       paragraph.textContent = this._rusHyphenate(paragraph.textContent)
       paragraph.textContent = this._noBreakPrepositions(paragraph.textContent)
@@ -836,8 +865,11 @@ class TypoText extends HTMLElement {
 
     this.baseTopOffset =
       this.typographySettings.lineHeight -
+      (this.typographySettings.lineHeight - this.typographySettings.fontSize * 1.2) / 2 -
       (this.fontMetrics.descent - this.fontMetrics.xHeight) * this.typographySettings.fontSize
-    this.baseBottomOffset = this.fontMetrics.descent * this.typographySettings.fontSize
+    this.baseBottomOffset =
+      this.fontMetrics.descent * this.typographySettings.fontSize +
+      (this.typographySettings.lineHeight - this.typographySettings.fontSize * 1.2) / 2
 
     for (const paragraph of Array.from(this.getElementsByTagName('p'))) {
       paragraph.style.marginBottom = this.typographySettings.lineHeightPx
